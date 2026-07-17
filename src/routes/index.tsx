@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
+import { LegalModal, type LegalKind } from "@/components/LegalModal";
+
 import {
   ArrowRight,
   ArrowUpRight,
