@@ -803,6 +803,11 @@ function Field({
 
 function Footer() {
   const year = useMemo(() => new Date().getFullYear(), []);
+  const [legal, setLegal] = useState<LegalKind | null>(null);
+  const privacyRef = useRef<HTMLButtonElement>(null);
+  const termsRef = useRef<HTMLButtonElement>(null);
+  const returnRef = legal === "privacy" ? privacyRef : legal === "terms" ? termsRef : undefined;
+
   return (
     <footer className="border-t border-white/10 bg-[color:var(--navy-deep)] text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[1.4fr_1fr_1fr]">
@@ -836,6 +841,28 @@ function Footer() {
             </li>
             <li>Phone — Available soon</li>
             <li className="text-white/65">Available soon on Google Play and the App Store.</li>
+            <li className="pt-2">
+              <button
+                id="privacy"
+                ref={privacyRef}
+                type="button"
+                onClick={() => setLegal("privacy")}
+                className="cursor-pointer text-left text-white/80 transition-colors hover:text-white hover:underline underline-offset-4"
+              >
+                Privacy Policy
+              </button>
+            </li>
+            <li>
+              <button
+                id="terms"
+                ref={termsRef}
+                type="button"
+                onClick={() => setLegal("terms")}
+                className="cursor-pointer text-left text-white/80 transition-colors hover:text-white hover:underline underline-offset-4"
+              >
+                Terms & Conditions
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -845,6 +872,14 @@ function Footer() {
           <p className="font-medium text-white/70">Voorburg · Netherlands</p>
         </div>
       </div>
+      {legal && (
+        <LegalModal
+          kind={legal}
+          onClose={() => setLegal(null)}
+          returnFocusRef={returnRef}
+        />
+      )}
     </footer>
   );
 }
+
