@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useRef, useState, type FormEvent } from "react";
-import { LegalModal, type LegalKind } from "@/components/LegalModal";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo, useState, type FormEvent } from "react";
+
 
 import {
   ArrowRight,
@@ -803,10 +803,8 @@ function Field({
 
 function Footer() {
   const year = useMemo(() => new Date().getFullYear(), []);
-  const [legal, setLegal] = useState<LegalKind | null>(null);
-  const privacyRef = useRef<HTMLButtonElement>(null);
-  const termsRef = useRef<HTMLButtonElement>(null);
-  const returnRef = legal === "privacy" ? privacyRef : legal === "terms" ? termsRef : undefined;
+  const [legal, setLegal] = useState<"privacy" | "terms" | null>(null);
+
 
   return (
     <footer className="border-t border-white/10 bg-[color:var(--navy-deep)] text-white">
