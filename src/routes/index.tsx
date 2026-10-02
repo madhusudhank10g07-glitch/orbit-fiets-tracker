@@ -73,11 +73,13 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-const navLinks = [
+const navLinks: Array<{ label: string; href: string; to?: string }> = [
   { label: "About", href: "#about" },
   { label: "Orbit Fiets", href: "#built" },
   { label: "Why It Matters", href: "#why" },
   { label: "Contact", href: "#contact" },
+  { label: "Privacy Policy", href: "/privacy-policy", to: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms-and-conditions", to: "/terms-and-conditions" },
 ];
 
 function LandingPage() {
