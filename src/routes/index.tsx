@@ -113,15 +113,25 @@ function Nav() {
           </span>
         </a>
         <nav className="hidden items-center gap-9 md:flex">
-          {navLinks.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {l.label}
-            </a>
-          ))}
+          {navLinks.map((l) =>
+            l.to ? (
+              <Link
+                key={l.href}
+                to={l.to}
+                className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {l.label}
+              </a>
+            )
+          )}
         </nav>
         <div className="flex items-center gap-2">
           <a
