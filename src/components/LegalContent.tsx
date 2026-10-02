@@ -1,138 +1,6 @@
-import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
+import { H3, LI, P, UL } from "./LegalProse";
 
-export type LegalKind = "privacy" | "terms";
-
-interface LegalModalProps {
-  kind: LegalKind;
-  onClose: () => void;
-  returnFocusRef?: React.RefObject<HTMLElement | null>;
-}
-
-const TITLES: Record<LegalKind, string> = {
-  privacy: "Privacy Policy",
-  terms: "Terms & Conditions",
-};
-
-export function LegalModal({ kind, onClose, returnFocusRef }: LegalModalProps) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const titleId = `legal-modal-title-${kind}`;
-
-  useEffect(() => {
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const prevActive = document.activeElement as HTMLElement | null;
-    // Focus close button on open
-    requestAnimationFrame(() => closeBtnRef.current?.focus());
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.stopPropagation();
-        onClose();
-      } else if (e.key === "Tab") {
-        const root = dialogRef.current;
-        if (!root) return;
-        const focusables = root.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
-        );
-        if (focusables.length === 0) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        const active = document.activeElement as HTMLElement | null;
-        if (e.shiftKey && active === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && active === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-      const target = returnFocusRef?.current ?? prevActive;
-      target?.focus?.();
-    };
-  }, [onClose, returnFocusRef]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] grid place-items-center overflow-y-auto bg-[color:var(--navy-deep)]/70 px-4 py-8 backdrop-blur-sm animate-in fade-in duration-200"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        className="relative flex w-full max-w-[850px] max-h-[80vh] flex-col overflow-hidden rounded-3xl border border-border bg-card text-card-foreground shadow-elevated animate-in fade-in zoom-in-95 duration-200"
-      >
-        <div className="flex items-start justify-between gap-4 border-b border-border px-6 py-5 sm:px-8">
-          <div>
-            <h2
-              id={titleId}
-              className="font-display text-xl font-bold tracking-tight sm:text-2xl"
-            >
-              {TITLES[kind]}
-            </h2>
-            <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              Effective Date: 17 July 2026
-            </p>
-          </div>
-          <button
-            ref={closeBtnRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Close dialog"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus:ring-4 focus:ring-[color:var(--steel)]/20"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-        <div className="overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
-          {kind === "privacy" ? <PrivacyContent /> : <TermsContent />}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function H3({ children }: { children: React.ReactNode }) {
-  return (
-    <h3 className="mt-7 font-display text-base font-bold tracking-tight sm:text-lg">
-      {children}
-    </h3>
-  );
-}
-
-function P({ children }: { children: React.ReactNode }) {
-  return <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">{children}</p>;
-}
-
-function UL({ children }: { children: React.ReactNode }) {
-  return (
-    <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
-      {children}
-    </ul>
-  );
-}
-
-function LI({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex gap-2">
-      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--steel)]" />
-      <span>{children}</span>
-    </li>
-  );
-}
-
-function PrivacyContent() {
+export function PrivacyContent() {
   return (
     <div className="text-foreground">
       <P>
@@ -222,7 +90,7 @@ function PrivacyContent() {
   );
 }
 
-function TermsContent() {
+export function TermsContent() {
   return (
     <div className="text-foreground">
       <P>
