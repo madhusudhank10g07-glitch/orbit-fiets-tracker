@@ -73,11 +73,13 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-const navLinks = [
+const navLinks: Array<{ label: string; href: string; to?: string }> = [
   { label: "About", href: "#about" },
   { label: "Orbit Fiets", href: "#built" },
   { label: "Why It Matters", href: "#why" },
   { label: "Contact", href: "#contact" },
+  { label: "Privacy Policy", href: "/privacy-policy", to: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms-and-conditions", to: "/terms-and-conditions" },
 ];
 
 function LandingPage() {
@@ -111,15 +113,25 @@ function Nav() {
           </span>
         </a>
         <nav className="hidden items-center gap-9 md:flex">
-          {navLinks.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {l.label}
-            </a>
-          ))}
+          {navLinks.map((l) =>
+            l.to ? (
+              <Link
+                key={l.href}
+                to={l.to}
+                className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {l.label}
+              </a>
+            )
+          )}
         </nav>
         <div className="flex items-center gap-2">
           <a
@@ -145,16 +157,27 @@ function Nav() {
       {open && (
         <div className="border-t border-border bg-background md:hidden">
           <div className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-3">
-            {navLinks.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
-              >
-                {l.label}
-              </a>
-            ))}
+            {navLinks.map((l) =>
+              l.to ? (
+                <Link
+                  key={l.href}
+                  to={l.to}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
             <a
               href="#contact"
               onClick={() => setOpen(false)}
